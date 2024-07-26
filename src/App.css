@@ -1,0 +1,13 @@
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+.nav-bar-left, .nav-bar-right {
+  margin: 0 0.5rem;
+}
+
