@@ -35,6 +35,10 @@
   height: 24px;
 }
 
+.error-page-container {
+  margin-top: 4rem;
+}
+
 .dashboard-container {
   margin-top: 4rem;
 }
