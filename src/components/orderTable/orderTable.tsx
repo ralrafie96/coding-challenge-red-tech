@@ -81,7 +81,7 @@ export const OrderTable = () => {
     }, [])
 
     useEffect(() => {
-        let filtRows: Order[] = rows.filter((row) => row.orderType === orderType || orderType === '').filter((row) => row.customerName === customerSearch || customerSearch === '')
+        let filtRows: Order[] = rows.filter((row) => row.orderType === orderType || orderType === '').filter((row) => row.customerName.toLowerCase().includes(customerSearch.toLowerCase()) || customerSearch === '')
         setFilteredRows(filtRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))
         setRowCount(filtRows.length)
     }, [rows, orderType, customerSearch, page, rowsPerPage])
