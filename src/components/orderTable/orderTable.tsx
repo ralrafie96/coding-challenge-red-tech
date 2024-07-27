@@ -5,14 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
-
-interface Order {
-    orderId: string;
-    createdDate: string;
-    createdByUserName: string;
-    orderType: string;
-    customerName: string;
-}
+import { Order } from '../../models/order';
 
 export const OrderTable = () => {
 

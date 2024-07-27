@@ -1,12 +1,16 @@
 import { Box, Button, MenuItem, Paper, Select, TextField, Typography } from '@mui/material'
 import AxiosClient from '../../utils/axiosClient';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 } from 'uuid';
+import { ClearOrder, GetOrder, MakeOrder } from '../../redux/actions/order';
+import { useSelector } from 'react-redux'
+import { Order } from '../../models/order';
 
 export const CreateOrder = () => {
 
     const navigate = useNavigate()
+    let id = v4()
 
     const OrderTypeLst = [
         'PurchaseOrder',
@@ -20,6 +24,16 @@ export const CreateOrder = () => {
     const [customer, setCustomer] = useState<string>('')
     const [orderType, setOrderType] = useState<string>('')
     const [errMsg, setErrMsg] = useState<string>('')
+
+    
+    const reduxOrder: any = useSelector((state: any) => state.order)
+
+    useEffect(() => {
+        GetOrder()
+        setCustomer(reduxOrder?.customerName)
+        setCreatedBy(reduxOrder?.createdByUserName)
+        setOrderType(reduxOrder?.orderType)
+    }, [GetOrder])
 
     const handleSubmit = async () => {
         let errFld: string[] = []
@@ -43,7 +57,6 @@ export const CreateOrder = () => {
             setErrMsg(`The following fields have errors: ${errFld.join(', ')}`)
             return
         }
-        let id = v4()
         let date = new Date()
         let dateString = `${date.getDay()}, ${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`
         try {
@@ -54,10 +67,24 @@ export const CreateOrder = () => {
                 "createdDate": dateString,
                 "createdByUserName": createdBy
             })
+            ClearOrder()
             navigate('/dashboard')
         } catch (e) {
             setErrMsg(`The following error occurred: ${e}`)
         }
+    }
+
+    const handleSave = () => {
+        let date = new Date()
+        let dateString = `${date.getDay()}, ${date.getDate()} ${date.getMonth()} ${date.getFullYear()}`
+        MakeOrder({
+            "orderId": id,
+            "orderType": orderType,
+            "customerName": customer,
+            "createdDate": dateString,
+            "createdByUserName": createdBy
+        })
+        navigate('/dashboard')
     }
 
     return (
@@ -90,6 +117,9 @@ export const CreateOrder = () => {
                 </Box>
                 <Box className="create-order-errors">
                     <Typography>{errMsg}</Typography>
+                </Box>
+                <Box className="create-order-btns">
+                    <Button style={{ color: 'white', background: 'blue' }} className="create-order-btn" onClick={handleSave}>Save Order</Button>
                 </Box>
                 <Box className="create-order-btns">
                     <Button variant='outlined' className="create-order-btn" onClick={() => navigate('/dashboard')}>Cancel</Button>
