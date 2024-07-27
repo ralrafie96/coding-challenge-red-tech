@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Input, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
+import { Box, Button, Checkbox, MenuItem, Paper, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import AxiosClient from '../../utils/axiosClient';
 import SearchIcon from '@mui/icons-material/Search';
@@ -59,14 +59,13 @@ export const OrderTable = () => {
     }
 
     const handleCustomerChange = () => {
-        console.log(searchText)
         setCustomerSearch(searchText)
         setPage(0)
     }
 
     const handleDelete = async () => {
         const deleteIds = ordersSelected.filter((item) => item.orderId).map((item) => item.orderId)
-        const results = await AxiosClient.post('https://red-candidate-web.azurewebsites.net/api/Orders/Delete', deleteIds)
+        await AxiosClient.post('https://red-candidate-web.azurewebsites.net/api/Orders/Delete', deleteIds)
         setOrdersSelected([])
         setRows(rows.filter((item) => !deleteIds.includes(item.orderId)))
         setPage(0)
@@ -115,7 +114,7 @@ export const OrderTable = () => {
                 <Table className='order-table'>
                     <TableHead>
                         <TableRow>
-                            <TableCell><Checkbox checked={ordersSelected.length == filteredRows.length} onChange={(e) => handleAllOrdersSelected(e)} /></TableCell>
+                            <TableCell><Checkbox checked={ordersSelected.length === filteredRows.length} onChange={(e) => handleAllOrdersSelected(e)} /></TableCell>
                             <TableCell>Order ID</TableCell>
                             <TableCell align="right">Creation Date</TableCell>
                             <TableCell align="right">Created By</TableCell>
@@ -129,7 +128,7 @@ export const OrderTable = () => {
                                 key={row.orderId}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell><Checkbox checked={ordersSelected.indexOf(row) != -1} onChange={(e) => handleOrderSelected(e, row)} /></TableCell>
+                                <TableCell><Checkbox checked={ordersSelected.indexOf(row) !== -1} onChange={(e) => handleOrderSelected(e, row)} /></TableCell>
                                 <TableCell component="th" scope="row">{row.orderId}</TableCell>
                                 <TableCell align="right">{row.createdDate.toString()}</TableCell>
                                 <TableCell align="right">{row.createdByUserName}</TableCell>

@@ -23,6 +23,16 @@
 
 .nav-bar-left {
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-bar-logo {
+  width: 24px;
+  height: 24px;
 }
 
 .dashboard-container {
@@ -84,6 +94,12 @@
 
 .create-order-btn {
   width: 100%;
+}
+
+.create-order-errors {
+  width: 100%;
+  margin-top: 1rem;
+  color: red;
 }
 
 h2, h3 {
